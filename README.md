@@ -1,0 +1,2 @@
+# Iniciacio-python
+.
