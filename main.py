@@ -25,6 +25,8 @@ print(f"operació té com a resultat: {operació}, i és de tipus: ·")
 # Calculadora de productes.
 import math
 # lectura de les dades d'entrada
+
+
 a = int(round(float(input("Digues un número: "))))
 
 b = int(round(float(input("Digues un altre número: "))))
@@ -32,9 +34,12 @@ b = int(round(float(input("Digues un altre número: "))))
 c = int(round(float(input("Digues un altre número: "))))
 
 # càlcul del producte
-p = (b + (math.sqrt(b * b - 4 * a * c))) / 2
+x1 = (-b + (math.sqrt(b**2 - 4 * a * c))) / (2 * a)
 
+x2 = (-b - (math.sqrt(b**2 - 4 * a * c))) / (2 * a)
 
+print()
 
 # escriptura de la dada de sortida
-print('El resultat és', p)
+print('La x1 és', x1)
+print('La x2 és', x2)
