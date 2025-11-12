@@ -9,16 +9,18 @@ altura = float(input("Introdueix la teva altura (m): "))
 print()
 
 print("---- Informe de salut ----")
-print(f"Nom: {nom} {type(nom)}")
-print(f"Edat: {edat} anys")
-print(f"pes: {pes} kg")
-print(f"Altura: {altura} m")
+print(f"Nom: {nom}")
+print(f"Edat: {edat} (tipo: {type(edat)})")
+print(f"Pes: {pes} kg (tipo: {type(pes)})")
+print(f"Altura: {altura} m (tipo: {type(altura)})")
 
 print()
 
 imc = pes / altura**2
+
+
     
-print(f"Índex de massa corporal (IMC): {imc}")   
+print(f"Índex de massa corporal (IMC): {imc:.2f}")   
 
 if imc > 40:
     print("Classificació: Obsesitat III")
