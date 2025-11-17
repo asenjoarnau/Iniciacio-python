@@ -17,8 +17,6 @@ print(f"Altura: {altura} m (tipo: {type(altura)})") # el mateix
 print() # Aquest print el que fa és que deixa un espai en la sortida de dades
 
 imc = pes / altura**2  # declaro que imc = a pes / altura**2.  el **2 es per elevar un numero i ho pots fer amb qualsevol altre numero ex: **4, en aquest cas estaria elevat a 4
-
-
     
 print(f"Índex de massa corporal (IMC): {imc:.2f}") # Basicament imprimeix l'índex de massa corporal {} son per declarar l variable imc. I els :2f és perque els dos punts son per indicar que donare instruccions de format, el .2 es perque el resultat sigui en dos decimals i la f es perque indica que el numero esta formatat en float, un numero decimal
 
