@@ -104,3 +104,7 @@ if vides == 0:
     print("GAME OVER! T'has quedat sense vides.")
 else:
     print("ENHORABONA! Has superat el trivial.")
+
+print(f"Punts totals: {punts} punts.")
+
+time.sleep(5)  # Pausa final per veure el resultat abans de tancar

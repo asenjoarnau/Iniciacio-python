@@ -1,0 +1,17 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Canción de ejemplo",
+      "artist": "Alumno",
+      "duration": 5
+    },
+    {
+      "id": 2,
+      "title": "Segunda canción",
+      "artist": "Alumno",
+      "duration": 4
+    }
+  ],
+  "playlists": {}
+}

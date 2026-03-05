@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moto Highway Dodge</title>
+    <style>
+        body { margin: 0; background: #222; color: #fff; font-family: Arial; display: flex; flex-direction: column; align-items: center; }
+        canvas { background: #333; display: block; margin-top: 20px; border: 4px solid #fff; }
+        #score { font-size: 24px; margin-top: 10px; color: yellow; }
+        #gameover { display: none; text-align: center; }
+        .btn { padding: 10px 20px; background: #007bff; border: none; color: #fff; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Moto Highway Dodge</h1>
+    <div id="score">Punts: 0</div>
+    <div id="gameover">
+        <h2 style="color: red;">GAME OVER!</h2>
+        <button class="btn" onclick="resetGame()">Reiniciar (R)</button>
+    </div>
+    <canvas id="gameCanvas" width="300" height="500"></canvas>
+    <p>Usa les fletxes ← → per moure't</p>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const gameOverEl = document.getElementById('gameover');
+
+        const LANE_WIDTH = canvas.width / 3;
+        const MOTO_WIDTH = 40;
+        const MOTO_HEIGHT = 70;
+        const CAR_WIDTH = 50;
+        const CAR_HEIGHT = 80;
+
+        let moto = { lane: 1, x: 0, y: canvas.height - 100 };
+        let cars = [];
+        let score = 0;
+        let carSpeed = 4;
+        let spawnTimer = 0;
+        let isGameOver = false;
+
+        function updateMotoX() {
+            moto.x = (moto.lane * LANE_WIDTH) + (LANE_WIDTH / 2) - (MOTO_WIDTH / 2);
+        }
+
+        function spawnCar() {
+            let lane = Math.floor(Math.random() * 3);
+            let x = (lane * LANE_WIDTH) + (LANE_WIDTH / 2) - (CAR_WIDTH / 2);
+            cars.push({ x: x, y: -CAR_HEIGHT, lane: lane });
+        }
+
+        function resetGame() {
+            moto.lane = 1;
+            updateMotoX();
+            cars = [];
+            score = 0;
+            carSpeed = 4;
+            isGameOver = false;
+            gameOverEl.style.display = 'none';
+            gameLoop();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (isGameOver) {
+                if (e.key === 'r' || e.key === 'R') resetGame();
+                return;
+            }
+            if (e.key === 'ArrowLeft' && moto.lane > 0) moto.lane--;
+            if (e.key === 'ArrowRight' && moto.lane < 2) moto.lane++;
+            updateMotoX();
+        });
+
+        function gameLoop() {
+            if (isGameOver) return;
+
+            // Update
+            spawnTimer++;
+            if (spawnTimer > 70) {
+                spawnCar();
+                spawnTimer = 0;
+                carSpeed += 0.05;
+            }
+
+            cars.forEach((car, index) => {
+                car.y += carSpeed;
+
+                // Collision
+                if (moto.x < car.x + CAR_WIDTH &&
+                    moto.x + MOTO_WIDTH > car.x &&
+                    moto.y < car.y + CAR_HEIGHT &&
+                    moto.y + MOTO_HEIGHT > car.y) {
+                    isGameOver = true;
+                }
+
+                // Off-screen
+                if (car.y > canvas.height) {
+                    cars.splice(index, 1);
+                    score++;
+                    scoreEl.innerText = `Punts: ${score}`;
+                }
+            });
+
+            // Draw
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Lanes
+            ctx.strokeStyle = '#fff';
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.moveTo(LANE_WIDTH, 0); ctx.lineTo(LANE_WIDTH, canvas.height);
+            ctx.moveTo(LANE_WIDTH * 2, 0); ctx.lineTo(LANE_WIDTH * 2, canvas.height);
+            ctx.stroke();
+
+            // Moto
+            ctx.fillStyle = '#007bff';
+            ctx.fillRect(moto.x, moto.y, MOTO_WIDTH, MOTO_HEIGHT);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(moto.x + 5, moto.y - 10, 30, 20); // Helmet
+
+            // Cars
+            ctx.fillStyle = '#ff4444';
+            cars.forEach(car => {
+                ctx.fillRect(car.x, car.y, CAR_WIDTH, CAR_HEIGHT);
+            });
+
+            if (isGameOver) {
+                gameOverEl.style.display = 'block';
+            } else {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        updateMotoX();
+        gameLoop();
+    </script>
+</body>
+</html>
